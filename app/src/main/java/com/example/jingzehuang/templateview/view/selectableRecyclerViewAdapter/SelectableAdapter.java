@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 public abstract class SelectableAdapter extends RecyclerView.Adapter{
 
     private final boolean IS_MULTI_CHECK_MODE;
-    private final int NO_VIEW_SELECTED = -1;
+    public static final int NO_VIEW_SELECTED = -1;
 
     //for multi-selected check
     private HashSet<Integer> selectedViewSet;
@@ -57,6 +57,20 @@ public abstract class SelectableAdapter extends RecyclerView.Adapter{
 
     public abstract void onBindSelectableViewHolder(@NonNull SelectableViewHolder holder, int position);
 
+    public int getSingleSelectedIndex() {
+        if (!IS_MULTI_CHECK_MODE) {
+            return selectedViewSet.iterator().next();
+        } else {
+            Log.e("SelectableAdapter", "Trying to get a single-selected index from this multi-selected adapter");
+            return NO_VIEW_SELECTED;
+        }
+    }
+
+    public HashSet<Integer> getSelectedSet() {
+        return new HashSet<>(selectedViewSet);
+    }
+
+    //
     private boolean addToSelectedViewSet(int index) {
         if (!IS_MULTI_CHECK_MODE || selectedViewSet.contains(NO_VIEW_SELECTED)) {
             selectedViewSet.clear();
